@@ -9,6 +9,7 @@ namespace WebMN.Controllers
 {
     public class LoginController : Controller
     {
+        //Esto es una instancia del modelo
         Usuario usuarioModel = new Usuario();
 
         public ActionResult Index()
