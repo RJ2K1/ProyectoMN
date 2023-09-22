@@ -20,7 +20,12 @@ namespace WebMN.Controllers
         public ActionResult IniciarSesion()
         {
             return View();
-        }        
+        }
+
+        public ActionResult RegistrarCuenta()
+        {
+            return View();
+        }
 
     }
 }
