@@ -15,7 +15,20 @@
           <Property Name="Correo" Type="varchar" MaxLength="100" Nullable="false" />
           <Property Name="Contrasenna" Type="varchar" MaxLength="20" Nullable="false" />
           <Property Name="Direccion" Type="varchar" MaxLength="500" Nullable="false" />
+          <Property Name="Estado" Type="bit" Nullable="false" />
         </EntityType>
+        <Function Name="IniciarSesion_SP" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Correo" Type="varchar" Mode="In" />
+          <Parameter Name="Contrasenna" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="RegistrarCuenta_SP" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Identificacion" Type="varchar" Mode="In" />
+          <Parameter Name="Nombre" Type="varchar" Mode="In" />
+          <Parameter Name="Correo" Type="varchar" Mode="In" />
+          <Parameter Name="Contrasenna" Type="varchar" Mode="In" />
+          <Parameter Name="Direccion" Type="varchar" Mode="In" />
+          <Parameter Name="Estado" Type="bit" Mode="In" />
+        </Function>
         <EntityContainer Name="BDMNModelStoreContainer">
           <EntitySet Name="TUsuario" EntityType="Self.TUsuario" Schema="dbo" store:Type="Tables" />
         </EntityContainer>
@@ -33,10 +46,32 @@
           <Property Name="Correo" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Contrasenna" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Direccion" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="Estado" Type="Boolean" Nullable="false" />
         </EntityType>
         <EntityContainer Name="BDMNEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="TUsuario" EntityType="Self.TUsuario" />
+          <FunctionImport Name="RegistrarCuenta_SP">
+            <Parameter Name="Identificacion" Mode="In" Type="String" />
+            <Parameter Name="Nombre" Mode="In" Type="String" />
+            <Parameter Name="Correo" Mode="In" Type="String" />
+            <Parameter Name="Contrasenna" Mode="In" Type="String" />
+            <Parameter Name="Direccion" Mode="In" Type="String" />
+            <Parameter Name="Estado" Mode="In" Type="Boolean" />
+          </FunctionImport>
+          <FunctionImport Name="IniciarSesion_SP" ReturnType="Collection(BDMNModel.IniciarSesion_SP_Result)">
+            <Parameter Name="Correo" Mode="In" Type="String" />
+            <Parameter Name="Contrasenna" Mode="In" Type="String" />
+          </FunctionImport>
         </EntityContainer>
+        <ComplexType Name="IniciarSesion_SP_Result">
+          <Property Type="Int64" Name="ConUsuario" Nullable="false" />
+          <Property Type="String" Name="Identificacion" Nullable="false" MaxLength="20" />
+          <Property Type="String" Name="Nombre" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="Correo" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="Contrasenna" Nullable="false" MaxLength="20" />
+          <Property Type="String" Name="Direccion" Nullable="false" MaxLength="500" />
+          <Property Type="Boolean" Name="Estado" Nullable="false" />
+        </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -46,6 +81,7 @@
           <EntitySetMapping Name="TUsuario">
             <EntityTypeMapping TypeName="BDMNModel.TUsuario">
               <MappingFragment StoreEntitySet="TUsuario">
+                <ScalarProperty Name="Estado" ColumnName="Estado" />
                 <ScalarProperty Name="Direccion" ColumnName="Direccion" />
                 <ScalarProperty Name="ConUsuario" ColumnName="ConUsuario" />
                 <ScalarProperty Name="Identificacion" ColumnName="Identificacion" />
@@ -55,6 +91,20 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="RegistrarCuenta_SP" FunctionName="BDMNModel.Store.RegistrarCuenta_SP" />
+          <FunctionImportMapping FunctionImportName="IniciarSesion_SP" FunctionName="BDMNModel.Store.IniciarSesion_SP">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="BDMNModel.IniciarSesion_SP_Result">
+                <ScalarProperty Name="ConUsuario" ColumnName="ConUsuario" />
+                <ScalarProperty Name="Identificacion" ColumnName="Identificacion" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="Correo" ColumnName="Correo" />
+                <ScalarProperty Name="Contrasenna" ColumnName="Contrasenna" />
+                <ScalarProperty Name="Direccion" ColumnName="Direccion" />
+                <ScalarProperty Name="Estado" ColumnName="Estado" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
