@@ -13,8 +13,15 @@
                     <img src="~/template/images/logo.svg" alt="logo">
                 </div>
 
+                @if (ViewBag.MensajeUsuario != null)
+                {
+                    <div class="alert alert-info" role="alert" style="text-align:center">
+                        @ViewBag.MensajeUsuario
+                    </div>
+                }
+
                 @using (Html.BeginForm("RecuperarCuenta", "Login", FormMethod.Post, new { @class = "pt-3" }))
-                { 
+                {
                     <div class="form-group">
                         @Html.TextBoxFor(m => m.Identificacion, new { @class = "form-control form-control-lg", @type = "text", @placeholder = "Identificación" })
                     </div>

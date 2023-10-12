@@ -27,8 +27,17 @@ namespace WebMN.Controllers
         [HttpPost]
         public ActionResult IniciarSesion(UsuarioEnt entidad)
         {
-            usuarioModel.IniciarSesion(entidad);
-            return View();
+            var resp = usuarioModel.IniciarSesion(entidad);
+
+            if (resp != null)
+            {
+                return RedirectToAction("Index", "Login");
+            }
+            else
+            {
+                ViewBag.MensajeUsuario = "Compruebe la información de sus credenciales";
+                return View();
+            }           
         }
 
 
@@ -41,8 +50,20 @@ namespace WebMN.Controllers
         [HttpPost]
         public ActionResult RegistrarCuenta(UsuarioEnt entidad)
         {
-            usuarioModel.RegistrarCuenta(entidad);
-            return View();
+            entidad.Direccion = string.Empty;
+            entidad.Estado = true;
+
+            var resp = usuarioModel.RegistrarCuenta(entidad);
+
+            if (resp == "OK")
+            {
+                return RedirectToAction("IniciarSesion", "Login");
+            }
+            else
+            {
+                ViewBag.MensajeUsuario = "No se ha registrado su información";
+                return View();
+            }
         }
 
 
@@ -55,8 +76,17 @@ namespace WebMN.Controllers
         [HttpPost]
         public ActionResult RecuperarCuenta(UsuarioEnt entidad)
         {
-            usuarioModel.RecuperarCuenta(entidad);
-            return View();
+            var resp = usuarioModel.RecuperarCuenta(entidad);
+
+            if (resp == "OK")
+            {
+                return RedirectToAction("IniciarSesion", "Login");
+            }
+            else
+            {
+                ViewBag.MensajeUsuario = "No se ha enviado el correo con su información";
+                return View();
+            }
         }
 
     }

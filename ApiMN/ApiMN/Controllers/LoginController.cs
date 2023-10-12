@@ -4,6 +4,7 @@ using ApiMN.Entities;
 using System.Linq;
 using System.Net.Mail;
 using System.Net;
+using System.IO;
 
 namespace ApiMN.Controllers
 {
@@ -64,7 +65,7 @@ namespace ApiMN.Controllers
 
         [HttpPost]
         [Route("RecuperarCuenta")]
-        public void RecuperarCuenta(UsuarioEnt entidad)
+        public string RecuperarCuenta(UsuarioEnt entidad)
         {
             try
             {
@@ -76,13 +77,19 @@ namespace ApiMN.Controllers
 
                     if (datos != null)
                     {
-                        EnvioCorreos(datos.Correo, "Recuperar Contraseña", datos.Contrasenna);
+                        string urlHtml = @"C:\mail.html";
+                        string html = File.ReadAllText(urlHtml);
+
+                        EnvioCorreos(datos.Correo, "Recuperar Contraseña", html);
+                        return "OK";
                     }
+
+                    return string.Empty;
                 }
             }
             catch (Exception)
             {
-                //return null;
+                return string.Empty;
             }
         }
 
