@@ -2,14 +2,14 @@
 using System.Web.Http;
 using ApiMN.Entities;
 using System.Linq;
-using System.Net.Mail;
-using System.Net;
 using System.IO;
 
 namespace ApiMN.Controllers
 {
     public class LoginController : ApiController
     {
+
+        Utilitarios util = new Utilitarios();
 
         [HttpPost]
         [Route("RegistrarCuenta")]
@@ -77,10 +77,13 @@ namespace ApiMN.Controllers
 
                     if (datos != null)
                     {
-                        string urlHtml = @"C:\mail.html";
+                        string urlHtml = AppDomain.CurrentDomain.BaseDirectory + "Templates\\mail.html";
                         string html = File.ReadAllText(urlHtml);
 
-                        EnvioCorreos(datos.Correo, "Recuperar Contraseña", html);
+                        html = html.Replace("@@Nombre", datos.Nombre);
+                        html = html.Replace("@@Contrasenna", datos.Contrasenna);
+
+                        util.EnvioCorreos(datos.Correo, "Recuperar Contraseña", html);
                         return "OK";
                     }
 
@@ -91,25 +94,6 @@ namespace ApiMN.Controllers
             {
                 return string.Empty;
             }
-        }
-
-        private void EnvioCorreos(string destino, string asunto, string contenido)
-        {
-            MailMessage message = new MailMessage();
-            message.From = new MailAddress("ecalvo90415@ufide.ac.cr");
-            message.To.Add(new MailAddress(destino));
-            message.Subject = asunto;
-            message.Body = contenido;
-            message.IsBodyHtml = true;
-
-            SmtpClient smtp = new SmtpClient();
-            smtp.Port = 587;
-            smtp.Host = "smtp.office365.com";
-            smtp.EnableSsl = true;
-            smtp.UseDefaultCredentials = false;
-            smtp.Credentials = new NetworkCredential("ecalvo90415@ufide.ac.cr", "XXXXXXXX");
-            smtp.DeliveryMethod = SmtpDeliveryMethod.Network;
-            smtp.Send(message);
         }
 
     }

@@ -1,4 +1,5 @@
-﻿using System.Net.Http;
+﻿using System.Configuration;
+using System.Net.Http;
 using System.Net.Http.Json;
 using WebMN.Entities;
 
@@ -7,11 +8,13 @@ namespace WebMN.Models
     public class UsuarioModel
     {
 
+        public string urlApi = ConfigurationManager.AppSettings["urlApi"];
+
         public UsuarioEnt IniciarSesion(UsuarioEnt entidad)
         {
             using (var client = new HttpClient())
             { 
-                string url = "https://localhost:44337/IniciarSesion";
+                string url = urlApi + "IniciarSesion";
                 JsonContent contenido = JsonContent.Create(entidad);
                 var resp = client.PostAsync(url, contenido).Result;
                 return resp.Content.ReadFromJsonAsync<UsuarioEnt>().Result;
@@ -22,7 +25,7 @@ namespace WebMN.Models
         {
             using (var client = new HttpClient())
             {
-                string url = "https://localhost:44337/RegistrarCuenta";
+                string url = urlApi + "RegistrarCuenta";
                 JsonContent contenido = JsonContent.Create(entidad);
                 var resp = client.PostAsync(url, contenido).Result;
                 return resp.Content.ReadFromJsonAsync<string>().Result;
@@ -33,7 +36,7 @@ namespace WebMN.Models
         {
             using (var client = new HttpClient())
             {
-                string url = "https://localhost:44337/RecuperarCuenta";
+                string url = urlApi + "RecuperarCuenta";
                 JsonContent contenido = JsonContent.Create(entidad);
                 var resp = client.PostAsync(url, contenido).Result;
                 return resp.Content.ReadFromJsonAsync<string>().Result;

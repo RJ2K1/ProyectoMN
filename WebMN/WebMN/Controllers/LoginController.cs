@@ -12,9 +12,18 @@ namespace WebMN.Controllers
     {
         UsuarioModel usuarioModel = new UsuarioModel();
 
+
+        [HttpGet]
         public ActionResult Index()
         {
             return View();
+        }
+
+        [HttpGet]
+        public ActionResult CerrarSesion()
+        {
+            Session.Clear();
+            return RedirectToAction("IniciarSesion", "Login");
         }
 
 
@@ -31,6 +40,7 @@ namespace WebMN.Controllers
 
             if (resp != null)
             {
+                Session["NombreUsuario"] = resp.Nombre;
                 return RedirectToAction("Index", "Login");
             }
             else
