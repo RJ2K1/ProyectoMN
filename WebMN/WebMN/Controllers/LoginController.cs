@@ -60,9 +60,6 @@ namespace WebMN.Controllers
         [HttpPost]
         public ActionResult RegistrarCuenta(UsuarioEnt entidad)
         {
-            entidad.Direccion = string.Empty;
-            entidad.Estado = true;
-
             var resp = usuarioModel.RegistrarCuenta(entidad);
 
             if (resp == "OK")

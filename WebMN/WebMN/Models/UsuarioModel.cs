@@ -1,6 +1,8 @@
-﻿using System.Configuration;
+﻿using System.Collections.Generic;
+using System.Configuration;
 using System.Net.Http;
 using System.Net.Http.Json;
+using System.Web.Mvc;
 using WebMN.Entities;
 
 namespace WebMN.Models
@@ -40,6 +42,16 @@ namespace WebMN.Models
                 JsonContent contenido = JsonContent.Create(entidad);
                 var resp = client.PostAsync(url, contenido).Result;
                 return resp.Content.ReadFromJsonAsync<string>().Result;
+            }
+        }
+
+        public List<SelectListItem> ConsultarProvincias()
+        {
+            using (var client = new HttpClient())
+            {
+                string url = urlApi + "ConsultarProvincias";                
+                var resp = client.GetAsync(url).Result;
+                return resp.Content.ReadFromJsonAsync<List<SelectListItem>>().Result;
             }
         }
 

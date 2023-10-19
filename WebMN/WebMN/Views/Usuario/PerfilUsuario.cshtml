@@ -1,0 +1,39 @@
+﻿@model WebMN.Entities.UsuarioEnt
+
+@{
+    ViewBag.Title = "PerfilUsuario";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="col-12 grid-margin stretch-card">
+    <div class="card">
+        <div class="card-body">
+            <h4 class="card-title">Información General</h4>
+
+            <form class="forms-sample">
+                <div class="form-group">
+                    <label for="exampleInputName1">Identificación</label>
+                    @Html.TextBoxFor(m => m.Identificacion, new { @class = "form-control form-control-lg", @type = "text", placeholder = "Identificación" })
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputEmail3">Nombre</label>
+                    @Html.TextBoxFor(m => m.Nombre, new { @class = "form-control form-control-lg", @type = "text", placeholder = "Nombre" })
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputPassword4">Correo Electrónico</label>
+                    @Html.TextBoxFor(m => m.Correo, new { @class = "form-control form-control-lg", @type = "email", @placeholder = "Correo Electrónico" })
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputPassword4">Provincia</label>
+                    @Html.DropDownListFor(m => m.DescripcionProvincia, ViewBag.Provincias as List<SelectListItem>, new { @class = "form-control form-control-lg", @type = "text", @placeholder = "Provincia" })
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputPassword4">Rol</label>
+                    @Html.TextBoxFor(m => m.DescripcionRol, new { @class = "form-control form-control-lg", @type = "text", @placeholder = "Rol" })
+                </div>
+                <button type="submit" class="btn btn-primary mr-2">Procesar</button>
+            </form>
+        </div>
+    </div>
+</div>
+

@@ -27,9 +27,24 @@ namespace ApiMN
             throw new UnintentionalCodeFirstException();
         }
     
+        public virtual DbSet<TProvincia> TProvincia { get; set; }
+        public virtual DbSet<TRol> TRol { get; set; }
         public virtual DbSet<TUsuario> TUsuario { get; set; }
     
-        public virtual int RegistrarCuenta_SP(string identificacion, string nombre, string correo, string contrasenna, string direccion, Nullable<bool> estado)
+        public virtual ObjectResult<IniciarSesion_SP_Result> IniciarSesion_SP(string correo, string contrasenna)
+        {
+            var correoParameter = correo != null ?
+                new ObjectParameter("Correo", correo) :
+                new ObjectParameter("Correo", typeof(string));
+    
+            var contrasennaParameter = contrasenna != null ?
+                new ObjectParameter("Contrasenna", contrasenna) :
+                new ObjectParameter("Contrasenna", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<IniciarSesion_SP_Result>("IniciarSesion_SP", correoParameter, contrasennaParameter);
+        }
+    
+        public virtual int RegistrarCuenta_SP(string identificacion, string nombre, string correo, string contrasenna)
         {
             var identificacionParameter = identificacion != null ?
                 new ObjectParameter("Identificacion", identificacion) :
@@ -47,28 +62,7 @@ namespace ApiMN
                 new ObjectParameter("Contrasenna", contrasenna) :
                 new ObjectParameter("Contrasenna", typeof(string));
     
-            var direccionParameter = direccion != null ?
-                new ObjectParameter("Direccion", direccion) :
-                new ObjectParameter("Direccion", typeof(string));
-    
-            var estadoParameter = estado.HasValue ?
-                new ObjectParameter("Estado", estado) :
-                new ObjectParameter("Estado", typeof(bool));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("RegistrarCuenta_SP", identificacionParameter, nombreParameter, correoParameter, contrasennaParameter, direccionParameter, estadoParameter);
-        }
-    
-        public virtual ObjectResult<IniciarSesion_SP_Result> IniciarSesion_SP(string correo, string contrasenna)
-        {
-            var correoParameter = correo != null ?
-                new ObjectParameter("Correo", correo) :
-                new ObjectParameter("Correo", typeof(string));
-    
-            var contrasennaParameter = contrasenna != null ?
-                new ObjectParameter("Contrasenna", contrasenna) :
-                new ObjectParameter("Contrasenna", typeof(string));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<IniciarSesion_SP_Result>("IniciarSesion_SP", correoParameter, contrasennaParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("RegistrarCuenta_SP", identificacionParameter, nombreParameter, correoParameter, contrasennaParameter);
         }
     }
 }

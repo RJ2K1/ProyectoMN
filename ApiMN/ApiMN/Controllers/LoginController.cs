@@ -3,6 +3,7 @@ using System.Web.Http;
 using ApiMN.Entities;
 using System.Linq;
 using System.IO;
+using System.Collections.Generic;
 
 namespace ApiMN.Controllers
 {
@@ -30,7 +31,7 @@ namespace ApiMN.Controllers
                     //context.TUsuario.Add(user);
                     //context.SaveChanges();
 
-                    context.RegistrarCuenta_SP(entidad.Identificacion, entidad.Nombre, entidad.Correo, entidad.Contrasenna, entidad.Direccion, entidad.Estado);
+                    context.RegistrarCuenta_SP(entidad.Identificacion, entidad.Nombre, entidad.Correo, entidad.Contrasenna);
                     return "OK";
                 }
             }
@@ -93,6 +94,25 @@ namespace ApiMN.Controllers
             catch (Exception)
             {
                 return string.Empty;
+            }
+        }
+
+        [HttpGet]
+        [Route("ConsultarProvincias")]
+        public List<System.Web.Mvc.SelectListItem> ConsultarProvincias()
+        {
+            using (var context = new BDMNEntities())
+            {
+                var datos = (from x in context.TProvincia
+                             select x).ToList();
+
+                var respuesta = new List<System.Web.Mvc.SelectListItem>();
+                foreach (var item in datos)
+                {
+                    respuesta.Add(new System.Web.Mvc.SelectListItem { Value = item.ConProvincia.ToString(), Text = item.Descripcion });
+                }
+
+                return respuesta;
             }
         }
 
