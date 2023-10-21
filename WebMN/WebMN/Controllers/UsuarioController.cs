@@ -12,6 +12,13 @@ namespace WebMN.Controllers
         UsuarioModel model = new UsuarioModel();
 
         [HttpGet]
+        public ActionResult ConsultaUsuarios()
+        {
+            var datos = model.ConsultaUsuarios();
+            return View(datos);
+        }
+
+        [HttpGet]
         public ActionResult PerfilUsuario()
         {
             ViewBag.Provincias = model.ConsultarProvincias();

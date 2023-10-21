@@ -97,24 +97,5 @@ namespace ApiMN.Controllers
             }
         }
 
-        [HttpGet]
-        [Route("ConsultarProvincias")]
-        public List<System.Web.Mvc.SelectListItem> ConsultarProvincias()
-        {
-            using (var context = new BDMNEntities())
-            {
-                var datos = (from x in context.TProvincia
-                             select x).ToList();
-
-                var respuesta = new List<System.Web.Mvc.SelectListItem>();
-                foreach (var item in datos)
-                {
-                    respuesta.Add(new System.Web.Mvc.SelectListItem { Value = item.ConProvincia.ToString(), Text = item.Descripcion });
-                }
-
-                return respuesta;
-            }
-        }
-
     }
 }

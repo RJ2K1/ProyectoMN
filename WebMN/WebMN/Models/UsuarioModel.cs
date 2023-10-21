@@ -55,5 +55,15 @@ namespace WebMN.Models
             }
         }
 
+        public List<UsuarioEnt> ConsultaUsuarios()
+        {
+            using (var client = new HttpClient())
+            {
+                var url = urlApi + "ConsultaUsuarios";
+                var res = client.GetAsync(url).Result;
+                return res.Content.ReadFromJsonAsync<List<UsuarioEnt>>().Result;
+            }
+        }
+
     }
 }
